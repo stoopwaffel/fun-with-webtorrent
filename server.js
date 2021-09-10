@@ -1,13 +1,20 @@
 import net from 'net'
+import streamSet from 'stream-set'
+
+var activeSockets = streamSet()
+
 const server = net.createServer((c) => {
   // 'connection' listener.
+  activeSockets.add(c)
   console.log('client connected');
   c.on('end', () => {
     console.log('client disconnected');
   });
   c.on('data', function(data) {
-   let q = c.write(`reply: ${data.toString()}`);
-   console.log(q);
+   console.log(`there are ${activeSockets.streams.length} sockets`)   
+   activeSockets.forEach(function(socket, i) {
+     socket.write(`reply: ${data.toString()}`);
+   })
   })
   c.pipe(c);
 });

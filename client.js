@@ -5,7 +5,7 @@ const client = net.createConnection({ port: 8124 }, () => {
     // 'connect' listener.
     console.log('connected to server!');
 }).on('data', function(data){
-    console.log(data.toString());
+    process.stdout.write(data)
 });
 
 process.stdin.on('data', function(data) {
