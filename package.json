@@ -1,0 +1,24 @@
+{
+  "name": "fun-with-webtorrent",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "https://github.com/stoopwaffel/fun-with-webtorrent.git",
+  "main": "client.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stoopwaffel/fun-with-webtorrent.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stoopwaffel/fun-with-webtorrent/issues"
+  },
+  "homepage": "https://github.com/stoopwaffel/fun-with-webtorrent#readme",
+  "dependencies": {
+    "process": "^0.11.10"
+  }
+}
