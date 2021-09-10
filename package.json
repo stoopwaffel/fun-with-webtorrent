@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/stoopwaffel/fun-with-webtorrent#readme",
   "dependencies": {
-    "process": "^0.11.10"
+    "process": "^0.11.10",
+    "stream-set": "^1.1.0"
   }
 }
