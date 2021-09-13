@@ -1,26 +1,27 @@
-import net from 'net'
-import streamSet from 'stream-set'
+var net = require('net')
+var jsonStream = require('duplex-json-stream')
 
-var activeSockets = streamSet()
+var register = require('register-multicast-dns')
+register('this-is-a-test.local')
 
-const server = net.createServer((c) => {
-  // 'connection' listener.
-  activeSockets.add(c)
-  console.log('client connected');
-  c.on('end', () => {
-    console.log('client disconnected');
-  });
-  c.on('data', function(data) {
-   console.log(`there are ${activeSockets.streams.length} sockets`)   
-   activeSockets.forEach(function(socket, i) {
-     socket.write(`reply: ${data.toString()}`);
-   })
-  })
-  c.pipe(c);
-});
-server.on('error', (err) => {
-  throw err;
-});
-server.listen(8124, () => {
-  console.log('server bound');
-});
+
+var clients = new Set()
+var server = net.createServer(function (socket) {
+    console.log('new socket connection')
+    socket = jsonStream(socket)
+    clients.add(socket)
+    socket.on('data', function (data) {
+        console.log(data)
+        for (let client of clients) {
+
+            client.write({
+                data: `${data.nickname}> ${data.data}`
+            })
+
+        }
+    })
+})
+
+server.listen(8124, function () {
+    console.log('server started')
+})

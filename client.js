@@ -1,18 +1,21 @@
-import process from 'process';
-import net from 'net';
-
-const client = net.createConnection({ port: 8124 }, () => {
-    // 'connect' listener.
-    console.log('connected to server!');
-}).on('data', function(data){
-    process.stdout.write(data)
-});
-
-process.stdin.on('data', function(data) {
-    client.write(data);
-});
+var net = require('net')
+var jsonStream = require('duplex-json-stream')
 
 
-client.on('end', () => {
-  console.log('disconnected from server');
-});
+require('lookup-multicast-dns/global')
+var socket = jsonStream(net.connect(8124, 'this-is-a-test.local'))
+
+var nickname = process.argv[2] || 'any'
+process.stdin.on('data', function (data) {
+    var message = data.toString().trim()
+    if (message.length > 0) {
+        socket.write({
+            nickname: nickname,
+            data: message
+        })
+    }
+})
+
+socket.on('data', function (data) {
+    console.log(data.data)
+})
